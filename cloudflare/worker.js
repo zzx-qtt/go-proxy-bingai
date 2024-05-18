@@ -11,7 +11,7 @@ const CUSTOM_OPTIONS = {
   APIKEY: '',
   Go_Proxy_BingAI_BLANK_API_KEY: false,
 
-  Go_Proxy_BingAI_AUTH_KEY: '',
+  Go_Proxy_BingAI_AUTH_KEYS: '',
 
   INFO: '',
   NIGHTLY: false,
@@ -426,7 +426,7 @@ export default {
     CUSTOM_OPTIONS.Go_Proxy_BingAI_BLANK_API_KEY = (env.Go_Proxy_BingAI_BLANK_API_KEY != '' && env.Go_Proxy_BingAI_BLANK_API_KEY != undefined &&env.Go_Proxy_BingAI_BLANK_API_KEY != null);
     CUSTOM_OPTIONS.INFO = env.INFO || '';
     CUSTOM_OPTIONS.NIGHTLY = (env.NIGHTLY != '' && env.NIGHTLY != undefined && env.NIGHTLY != null);
-    CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY = env.Go_Proxy_BingAI_AUTH_KEY || '';
+    CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEYS = env.Go_Proxy_BingAI_AUTH_KEY.split(',') || '';
 
     const currentUrl = new URL(request.url);
     if (WEB_CONFIG.WORKER_URL == '') {
@@ -438,7 +438,7 @@ export default {
     }
     if (currentUrl.pathname.startsWith('/sysconf')) {
       let isAuth = true;
-      if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.length !== 0) {
+      if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEYS.length !== 0) {
         const cookieStr = request.headers.get('Cookie') || '';
         let cookieObjects = {};
         cookieStr.split(';').forEach(item => {
@@ -450,7 +450,7 @@ export default {
           const val = arr.slice(1, arr.length+1).join('=').trim();
           cookieObjects[key] = val;
         })
-        if (cookieObjects[AUTH_KEY_COOKIE_NAME] !== CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY) {
+        if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEYS.indexOf(cookieObjects[AUTH_KEY_COOKIE_NAME]) === -1) {
           isAuth = false;
         }
       }
