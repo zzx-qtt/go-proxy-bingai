@@ -66,7 +66,9 @@ func getCookie(reqCookie, convId, rid string) (cookie string, err error) {
 		cookie += "; _U=" + hex.NewHex(128)
 	}
 	if len(common.AUTH_KEYS) > 0 {
-		cookie += "; " + common.AUTH_KEY_COOKIE_NAME + "=" + common.AUTH_KEYS[0]
+		if common.AUTH_KEYS[0] != "" {
+			cookie += "; " + common.AUTH_KEY_COOKIE_NAME + "=" + common.AUTH_KEYS[0]
+		}
 	}
 	return cookie, nil
 }
