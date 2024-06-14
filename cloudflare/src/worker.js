@@ -1,65 +1,8 @@
 import { bingapiModels, bingapiModel, bingapiChat, bingapiImage, getRandomIP } from "./bingapi.js"
+import { CUSTOM_OPTIONS,WEB_CONFIG,RAND_IP_COOKIE_NAME,AUTH_KEY_COOKIE_NAME, SYDNEY_ORIGIN , BING_ORIGIN, BING_SOURCE_ORIGIN, BING_SR_ORIGIN, EDGE_ORIGIN, DESIGNER_ORIGIN, DESIGNER_CDN_ORIGIN, DESIGNER_APP_ORIGIN , DESIGNER_APP_EDOG_ORIGIN , DESIGNER_DOCUMENT_ORIGIN , DESIGNER_USERASSETS_ORIGIN , DESIGNER_MEDIASUGGESTION_ORIGIN, DESIGNER_RTC_ORIGIN , KEEP_REQ_HEADERS } from "./OPTIONS.js"
+import { rewriteBody } from "./rewriteBody.js"
 
-// 同查找 _U 一样, 查找 KievRPSSecAuth 的值并替换下方的xxx
-const CUSTOM_OPTIONS = {
-  KievRPSSecAuth: '',
-  _RwBf: '',
-  MUID: '',
-  _U: '',
 
-  BYPASS_SERVER: '',
-  APIKEY: '',
-  Go_Proxy_BingAI_BLANK_API_KEY: false,
-
-  Go_Proxy_BingAI_AUTH_KEY: '',
-
-  INFO: '',
-  NIGHTLY: false,
-}
-
-const WEB_CONFIG = {
-  WORKER_URL: '', // 如无特殊需求请，保持为''
-};
-
-const RAND_IP_COOKIE_NAME = 'BingAI_Rand_IP';
-const AUTH_KEY_COOKIE_NAME = 'BingAI_Auth_Key';
-
-const SYDNEY_ORIGIN = 'https://sydney.bing.com';
-const BING_ORIGIN = 'https://www.bing.com';
-const BING_SOURCE_ORIGIN = 'https://th.bing.com';
-const BING_SR_ORIGIN = 'https://sr.bing.com';
-const EDGE_ORIGIN = 'https://edgeservices.bing.com';
-const DESIGNER_ORIGIN = 'https://designer.microsoft.com';
-const DESIGNER_CDN_ORIGIN = 'https://cdn.designerapp.osi.office.net';
-const DESIGNER_APP_ORIGIN = 'https://designerapp.officeapps.live.com';
-const DESIGNER_APP_EDOG_ORIGIN = 'https://designerapp.edog.officeapps.live.com';
-const DESIGNER_DOCUMENT_ORIGIN = 'https://document.designerapp.officeapps.live.com';
-const DESIGNER_USERASSETS_ORIGIN = 'https://userassets.designerapp.officeapps.live.com';
-const DESIGNER_MEDIASUGGESTION_ORIGIN = 'https://mediasuggestion.designerapp.officeapps.live.com';
-const DESIGNER_RTC_ORIGIN = 'https://rtc.designerapp.officeapps.live.com';
-const KEEP_REQ_HEADERS = [
-  'accept',
-  'accept-encoding',
-  'accept-language',
-  'authorization',
-  'connection',
-  'cookie',
-  'upgrade',
-  'user-agent',
-  'sec-websocket-extensions',
-  'sec-websocket-key',
-  'sec-websocket-version',
-  'x-request-id',
-  'content-length',
-  'content-type',
-  'access-control-request-headers',
-  'access-control-request-method',
-  'sec-ms-gec',
-  'sec-ms-gec-version',
-  'x-client-data',
-  'x-ms-client-request-id',
-  'x-ms-useragent',
-];
 
 
 /**
@@ -83,77 +26,9 @@ const randomString = (e) => {
   return n;
 }
 
-const replaceURL = (body) => {
-  body = body.replaceAll(BING_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", ""));
-  body = body.replaceAll(EDGE_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", ""));
-  body = body.replaceAll(BING_SOURCE_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/th');
-  body = body.replaceAll(DESIGNER_CDN_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer-cdn');
-  body = body.replaceAll(DESIGNER_APP_EDOG_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer-app-edog');
-  body = body.replaceAll(DESIGNER_DOCUMENT_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer-document');
-  body = body.replaceAll(DESIGNER_USERASSETS_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer-userassets');
-  body = body.replaceAll(DESIGNER_MEDIASUGGESTION_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer-mediasuggestion');
-  body = body.replaceAll(DESIGNER_RTC_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer-rtc');
-  body = body.replaceAll(DESIGNER_APP_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer-app');
-  body = body.replaceAll(DESIGNER_ORIGIN.replace("http://", "").replace("https://", ""), WEB_CONFIG.WORKER_URL.replace("http://", "").replace("https://", "") + '/designer');
-  return body
-}
 
-const rewriteBody = async (res) => {
-  const content_type = res.headers.get("Content-Type") || "";
-  let encoding = null;
-  let body = res.body;
-  if (content_type.startsWith("text/html") || res.url.endsWith("js")) {
-    let decodedContent = new TextDecoder("utf-8").decode(new Int8Array(await res.clone().arrayBuffer()));
-    if (decodedContent) {
-      // @ts-ignore
-      body = replaceURL(decodedContent);
-    }
-  }
-  return { body, encoding };
-}
 
-/**
- * home
- * @param {string} pathname
- * @returns
- */
-const home = async (pathname) => {
-  let baseUrl;
-  if (CUSTOM_OPTIONS.NIGHTLY) {
-    baseUrl = 'https://raw.githubusercontent.com/Harry-zklcdc/go-proxy-bingai/nightly/';
-  } else {
-    baseUrl = 'https://raw.githubusercontent.com/Harry-zklcdc/go-proxy-bingai/master/';
-  }
-  let url;
-  if (pathname.indexOf('/web/') === 0) {
-    url = pathname.replace('/web/', baseUrl + 'web/');
-    if (pathname == '/web/') {
-      url += 'index.html';
-    }
-  } else {
-    let res = new Response('', {
-      status: 302,
-    });
-    res.headers.set("location", "/web/");
-    return res;
-  }
-  const res = await fetch(url);
-  const result = await rewriteBody(res);
-  const newRes = new Response(result.body, res);
-  if (pathname.endsWith('.js')) {
-    newRes.headers.set('content-type', 'application/javascript');
-  } else if (pathname.endsWith('.css')) {
-    newRes.headers.set('content-type', 'text/css');
-  } else if (pathname.endsWith('.svg')) {
-    newRes.headers.set('content-type', 'image/svg+xml');
-  } else if (pathname.endsWith('.ico') || pathname.endsWith('.png')) {
-    newRes.headers.set('content-type', 'image/png');
-  } else {
-    newRes.headers.set('content-type', 'text/html; charset=utf-8');
-  }
-  newRes.headers.delete('content-security-policy');
-  return newRes;
-};
+
 
 const challengeResponseBody = `
 <html>
@@ -408,34 +283,16 @@ const bingapi = async (request, cookie) => {
   return Response.json({ code: 404, message: 'API No Found', data: null }, { status: 404 });
 };
 
-export default {
-  /**
-   * fetch
-   * @param {Request} request
-   * @param {*} env
-   * @param {*} ctx
-   * @returns
-   */
-  async fetch(request, env, ctx) {
-    CUSTOM_OPTIONS.KievRPSSecAuth = env.USER_KievRPSSecAuth || '';
-    CUSTOM_OPTIONS._RwBf = env.USER_RwBf || '';
-    CUSTOM_OPTIONS.MUID = env.USER_MUID || '';
-    CUSTOM_OPTIONS._U = env.Go_Proxy_BingAI_USER_TOKEN || '';
-    CUSTOM_OPTIONS.BYPASS_SERVER = env.BYPASS_SERVER || '';
-    CUSTOM_OPTIONS.APIKEY = env.APIKEY || '';
-    CUSTOM_OPTIONS.Go_Proxy_BingAI_BLANK_API_KEY = (env.Go_Proxy_BingAI_BLANK_API_KEY != '' && env.Go_Proxy_BingAI_BLANK_API_KEY != undefined &&env.Go_Proxy_BingAI_BLANK_API_KEY != null);
-    CUSTOM_OPTIONS.INFO = env.INFO || '';
-    CUSTOM_OPTIONS.NIGHTLY = (env.NIGHTLY != '' && env.NIGHTLY != undefined && env.NIGHTLY != null);
-    CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY = env.Go_Proxy_BingAI_AUTH_KEY || '';
+
+export async function fetch(request, env, ctx,home) {
+
 
     const currentUrl = new URL(request.url);
     if (WEB_CONFIG.WORKER_URL == '') {
       WEB_CONFIG.WORKER_URL = currentUrl.origin;
     }
     // if (currentUrl.pathname === '/' || currentUrl.pathname.startsWith('/github/')) {
-    if (currentUrl.pathname === '/' || currentUrl.pathname.indexOf('/web/') === 0) {
-      return home(currentUrl.pathname);
-    }
+
     if (currentUrl.pathname.startsWith('/sysconf')) {
       let isAuth = true;
       if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.length !== 0) {
@@ -607,5 +464,5 @@ export default {
     newRes.headers.set('Access-Control-Allow-Credentials', 'true');
     newRes.headers.set('Access-Control-Allow-Headers', '*');
     return newRes;
-  },
-};
+  }
+
