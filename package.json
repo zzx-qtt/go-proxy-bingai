@@ -1,5 +1,5 @@
 {
-  "name": "microsoft-copilot-porxy",
+  "name": "go-proxy-bingai",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,6 @@
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.27.0",
-    "rollup": "^4.18.0",
-    "wrangler": "^3.0.0"
+    "rollup": "^4.18.0"
   }
 }
