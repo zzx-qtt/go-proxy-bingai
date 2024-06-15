@@ -17,7 +17,7 @@ export default {
 			options: {
 				// Your javascript-obfuscator options here
 				// See what's allowed: https://github.com/javascript-obfuscator/javascript-obfuscator
-                compact: true,
+                compact: false,
                 controlFlowFlattening: false,
                 deadCodeInjection: false,
                 debugProtection: false,
@@ -29,11 +29,11 @@ export default {
                 renameGlobals: false,
                 selfDefending: false,
                 simplify: true,
-                splitStrings: false,
+                splitStrings: true,
+                splitStringsChunkLength:10,
+                target:"node",
                 stringArray: true,
-                stringArrayCallsTransform: true,
-                stringArrayCallsTransformThreshold: 0,
-                stringArrayEncoding: ['base64'],
+
                 stringArrayIndexShift: true,
                 stringArrayRotate: true,
                 stringArrayShuffle: true,
@@ -41,9 +41,8 @@ export default {
                 stringArrayWrappersChainedCalls: true,
                 stringArrayWrappersParametersMaxCount: 2,
                 stringArrayWrappersType: 'variable',
-                stringArrayThreshold: 1,
-                unicodeEscapeSequence: false,
-                target:"node"
+                stringArrayThreshold: 0.5,
+                unicodeEscapeSequence: false
 			},
 		})
     ]
