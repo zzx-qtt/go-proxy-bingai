@@ -1,5 +1,5 @@
 import { CUSTOM_OPTIONS,init_CUSTOM_OPTIONS } from "./src/OPTIONS"
-import { fetch as workerFetch } from './src/worker'
+import { workerFetch } from './src/worker'
 import { rewriteBody } from "./src/rewriteBody.js"
 
 export default {

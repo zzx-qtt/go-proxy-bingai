@@ -1,5 +1,5 @@
 import { init_CUSTOM_OPTIONS } from "./src/OPTIONS"
-import { fetch as workerFetch } from './src/worker'
+import { workerFetch } from './src/worker'
 
 
 export default {

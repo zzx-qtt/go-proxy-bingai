@@ -284,7 +284,7 @@ const bingapi = async (request, cookie) => {
 };
 
 
-export async function fetch(request, env, ctx,home) {
+export async function workerFetch(request, env, ctx,home) {
 
 
     const currentUrl = new URL(request.url);
