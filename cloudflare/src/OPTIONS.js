@@ -73,5 +73,5 @@ export function init_CUSTOM_OPTIONS(env) {
     CUSTOM_OPTIONS.Go_Proxy_BingAI_BLANK_API_KEY = (env.Go_Proxy_BingAI_BLANK_API_KEY != '' && env.Go_Proxy_BingAI_BLANK_API_KEY != undefined && env.Go_Proxy_BingAI_BLANK_API_KEY != null);
     CUSTOM_OPTIONS.INFO = env.INFO || '';
     CUSTOM_OPTIONS.NIGHTLY = (env.NIGHTLY != '' && env.NIGHTLY != undefined && env.NIGHTLY != null);
-    CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY = env.Go_Proxy_BingAI_AUTH_KEY.split(",") || [];
+    CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY = env.Go_Proxy_BingAI_AUTH_KEY != undefined && env.Go_Proxy_BingAI_AUTH_KEY != null && env.Go_Proxy_BingAI_AUTH_KEY != '' ? env.Go_Proxy_BingAI_AUTH_KEY.split(',') : [];
 }
