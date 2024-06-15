@@ -31,9 +31,7 @@ export default {
                 simplify: true,
                 splitStrings: true,
                 splitStringsChunkLength:10,
-                target:"node",
                 stringArray: true,
-
                 stringArrayIndexShift: true,
                 stringArrayRotate: true,
                 stringArrayShuffle: true,
