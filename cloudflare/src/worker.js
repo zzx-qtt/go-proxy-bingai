@@ -296,19 +296,21 @@ export async function workerFetch(request, env, ctx,home) {
     if (currentUrl.pathname.startsWith('/sysconf')) {
       let isAuth = true;
       if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.length !== 0) {
-        const cookieStr = request.headers.get('Cookie') || '';
-        let cookieObjects = {};
-        cookieStr.split(';').forEach(item => {
-          if (!item) {
-            return;
+        if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY[0] != '') {
+          const cookieStr = request.headers.get('Cookie') || '';
+          let cookieObjects = {};
+          cookieStr.split(';').forEach(item => {
+            if (!item) {
+              return;
+            }
+            const arr = item.split('=');
+            const key = arr[0].trim();
+            const val = arr.slice(1, arr.length+1).join('=').trim();
+            cookieObjects[key] = val;
+          })
+          if (cookieObjects[AUTH_KEY_COOKIE_NAME] !== CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY) {
+            isAuth = false;
           }
-          const arr = item.split('=');
-          const key = arr[0].trim();
-          const val = arr.slice(1, arr.length+1).join('=').trim();
-          cookieObjects[key] = val;
-        })
-        if (cookieObjects[AUTH_KEY_COOKIE_NAME] !== CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY) {
-          isAuth = false;
         }
       }
       return Response.json({ code: 200, message: 'success', data: { isSysCK: false, isAuth: isAuth, info: CUSTOM_OPTIONS.INFO } })
