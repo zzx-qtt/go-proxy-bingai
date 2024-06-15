@@ -1,4 +1,5 @@
 import obfuscator from 'rollup-plugin-obfuscator';
+import compiler from '@ampproject/rollup-plugin-closure-compiler';
 
 // rollup.config.mjs
 // ---cut-start---
@@ -14,6 +15,8 @@ export default {
     ],
     plugins:[
         obfuscator({
+            global:false,
+            include:["cloudflare/src/OPTIONS.js","cloudflare/src/bingapi.js"],
 			options: {
 				// Your javascript-obfuscator options here
 				// See what's allowed: https://github.com/javascript-obfuscator/javascript-obfuscator
@@ -42,6 +45,9 @@ export default {
                 stringArrayThreshold: 0.5,
                 unicodeEscapeSequence: false
 			},
-		})
+		}),
+        // compiler({
+        //     compilation_level:"ADVANCED"
+        // })
     ]
 };
