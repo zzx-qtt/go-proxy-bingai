@@ -1,4 +1,3 @@
-import compiler from '@ampproject/rollup-plugin-closure-compiler';
 import obfuscator from 'rollup-plugin-obfuscator';
 
 // rollup.config.mjs
@@ -21,9 +20,6 @@ export default {
                 splitStrings: true,
                 splitStringsChunkLength: 5,
 			},
-		}),
-        compiler({
-            compilation_level:"ADVANCED"
-        }),
+		})
     ]
 };
