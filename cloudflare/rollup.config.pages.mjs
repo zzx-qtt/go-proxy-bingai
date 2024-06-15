@@ -15,8 +15,8 @@ export default {
     ],
     plugins:[
         obfuscator({
-            global:false,
-            include:["cloudflare/src/OPTIONS.js","cloudflare/src/bingapi.js"],
+            // global:false,
+            // include:["cloudflare/src/OPTIONS.js","cloudflare/src/bingapi.js"],
 			options: {
 				// Your javascript-obfuscator options here
 				// See what's allowed: https://github.com/javascript-obfuscator/javascript-obfuscator
@@ -32,9 +32,10 @@ export default {
                 renameGlobals: false,
                 selfDefending: false,
                 simplify: true,
-                splitStrings: true,
-                splitStringsChunkLength:10,
+                // splitStrings: true,
+                // splitStringsChunkLength:10,
                 stringArray: true,
+                stringArrayEncoding: ['base64'],
                 stringArrayIndexShift: true,
                 stringArrayRotate: true,
                 stringArrayShuffle: true,
@@ -42,12 +43,12 @@ export default {
                 stringArrayWrappersChainedCalls: true,
                 stringArrayWrappersParametersMaxCount: 2,
                 stringArrayWrappersType: 'variable',
-                stringArrayThreshold: 0.5,
+                stringArrayThreshold: 1,
                 unicodeEscapeSequence: false
 			},
 		}),
-        // compiler({
-        //     compilation_level:"ADVANCED"
-        // })
+        compiler({
+            compilation_level:"ADVANCED"
+        })
     ]
 };
