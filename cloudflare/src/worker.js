@@ -429,7 +429,7 @@ export async function workerFetch(request, env, ctx,home) {
 
     if (currentUrl.pathname.startsWith('/sysconf')) {
       let isAuth = true;
-      if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.length !== 0) {
+      if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.length > 0) {
         const cookieStr = request.headers.get('Cookie') || '';
         let cookieObjects = {};
         cookieStr.split(';').forEach(item => {
