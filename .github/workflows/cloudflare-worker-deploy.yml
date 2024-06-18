@@ -17,11 +17,11 @@ jobs:
         with:
           run_install: true
           version: 9
-      - name: build - 构建
+      - name: Build
         run: pnpm run build-worker
-      - name: Build & Deploy Worker
+      - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: 'deploy --keep-vars --no-bundle'
+          command: 'deploy --keep-vars'

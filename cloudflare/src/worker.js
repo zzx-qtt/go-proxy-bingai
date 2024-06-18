@@ -41,7 +41,7 @@ const challengeResponseBody = `
                 const convId = window.parent.CIB.manager.conversation.id;
                 const rid = window.parent.CIB.manager.conversation.messages[0].requestId;
                 const iframeid = new URL(window.location.href).searchParams.get('iframeid');
-                const TA = window.parent._G.AT;//Harry-zklcdc这是验证通过的功能作者哦，本项目和go-proxy-bingai使用的相同的验证通过技术Harry-zklcdc/go-bingai-pass。
+                const TA = window.parent._G.AT;
                 const T = await window.parent.aesEncrypt(TA, IG);
                 const params = new URLSearchParams();
                 params.append("IG", IG);
@@ -429,7 +429,7 @@ export async function workerFetch(request, env, ctx,home) {
 
     if (currentUrl.pathname.startsWith('/sysconf')) {
       let isAuth = true;
-      if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.length !== 0) {
+      if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.length > 0) {
         const cookieStr = request.headers.get('Cookie') || '';
         let cookieObjects = {};
         cookieStr.split(';').forEach(item => {
