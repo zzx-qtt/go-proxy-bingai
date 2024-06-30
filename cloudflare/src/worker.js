@@ -447,7 +447,7 @@ export async function workerFetch(request, env, ctx,home) {
           const val = arr.slice(1, arr.length+1).join('=').trim();
           cookieObjects[key] = val;
         })
-        if (cookieObjects[AUTH_KEY_COOKIE_NAME] !== CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY) {
+        if (CUSTOM_OPTIONS.Go_Proxy_BingAI_AUTH_KEY.indexOf(cookieObjects[AUTH_KEY_COOKIE_NAME]) == -1) {
           isAuth = false;
         }
       }
